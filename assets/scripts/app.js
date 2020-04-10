@@ -4,7 +4,7 @@ let currentResult = defaultResult;
 
 let logEntries = [];
 
-function getUserInput (){
+function getUserNumberInput (){
     return parseInt(userInput.value);
 }
 
@@ -30,41 +30,44 @@ function writeToLog (
 
 }
 
-function add() {
-    const enteredNumber = getUserInput();
+function calculateResult (calculationType) {
+    const enteredNumber = getUserNumberInput();
     const initialResult = currentResult;
-    currentResult += enteredNumber; //.value will give the actual value from userInput from vendorJS
-    createAndWriteOutput('+',initialResult,enteredNumber);
-    writeToLog('ADD', initialResult, enteredNumber, currentResult);
+    let mathOperator;
+    if (calculationType === 'ADD') {
+        currentResult += enteredNumber;
+        mathOperator = '+';
+}   else if (calculationType === 'SUBTRACT') {
+        currentResult -= enteredNumber;
+        mathOperator = '-';
+}   else if (calculationType === 'MULTIPLY'){
+        currentResult *= enteredNumber;
+        mathOperator = '*';
 
+}   else if (calculationType === 'DIVIDE') {
+        currentResult /= enteredNumber;
+        mathOperator = '/';
+}
+    
+    createAndWriteOutput(mathOperator,initialResult,enteredNumber);
+    writeToLog(calculationType, initialResult, enteredNumber, currentResult);
 }
 
-function subtract(){
-    const enteredNumber = getUserInput();
-    const initialResult = currentResult;
-    currentResult -= parseInt(enteredNumber); //.value will give the actual value from userInput from vendorJS
-    createAndWriteOutput('-',initialResult,enteredNumber); 
-    writeToLog('SUBTRACT', initialResult, enteredNumber, currentResult);
+function add() {
+    calculateResult('ADD');
+}
+
+function subtract() {
+    calculateResult('SUBTRACT');
 }
 
 function multiply () {
-    const enteredNumber = getUserInput();
-    const initialResult = currentResult;
-    currentResult *= parseInt(enteredNumber); //.value will give the actual value from userInput from vendorJS
-    createAndWriteOutput('*',initialResult,enteredNumber); 
-    writeToLog('MULTIPLY', initialResult, enteredNumber, currentResult);
+    calculateResult('MULTIPLY');
 }
 
 function divide () {
-    const enteredNumber = getUserInput();
-    const initialResult = currentResult;
-    currentResult /= parseInt(enteredNumber); //.value will give the actual value from userInput from vendorJS
-    createAndWriteOutput('/',initialResult,enteredNumber); 
-    writeToLog('DIVIDE', initialResult, enteredNumber, currentResult);
+    calculateResult('DIVIDE');
 }
-
-
-
 addBtn.addEventListener('click', add); //only pass the function name do noot use () when adding in event listeniner.
 subtractBtn.addEventListener('click', subtract);
 multiplyBtn.addEventListener('click', multiply);
